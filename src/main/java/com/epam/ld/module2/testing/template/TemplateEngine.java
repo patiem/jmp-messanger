@@ -2,9 +2,10 @@ package com.epam.ld.module2.testing.template;
 
 import com.epam.ld.module2.testing.Client;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -27,8 +28,8 @@ public class TemplateEngine {
      */
     public String generateMessage(Template template, Client client) {
         String params = reader.readParams();
-        List<String> templateParams = extractParamsFromTemplate();
-        HashMap<String, String> inputParams = extractParamsFromUserInput();
+        List<String> templateParams = extractParamsFromTemplate(template);
+        HashMap<String, String> inputParams = extractParamsFromUserInput(params);
         return fillTemplate(template, templateParams, inputParams);
     }
 
@@ -43,13 +44,28 @@ public class TemplateEngine {
         return stringTemplate;
     }
 
-    private HashMap<String, String> extractParamsFromUserInput() {
+    private HashMap<String, String> extractParamsFromUserInput(String params) {
         HashMap<String, String> inputParams = new HashMap<>();
-        inputParams.put("name", "Bob");
+        Matcher matcher = Pattern.compile(".*=.*").matcher(params);
+        while (matcher.find()) {
+            String group = matcher.group();
+            String[] split = group.split("=");
+            inputParams.put(split[0], split[1]);
+        }
         return inputParams;
     }
 
-    private List<String> extractParamsFromTemplate() {
-        return Collections.singletonList("name");
+    private List<String> extractParamsFromTemplate(Template template) {
+        List<String> allMatches = new ArrayList<>();
+
+        Matcher matcher = Pattern.compile("#\\{(.+?)\\}").matcher(template.getTemplate());
+        while (matcher.find()) {
+            String group = matcher.group();
+            String pureHash = group.replaceAll("#", "")
+                    .replaceAll("\\{", "")
+                    .replaceAll("\\}", "");
+            allMatches.add(pureHash);
+        }
+        return allMatches;
     }
 }

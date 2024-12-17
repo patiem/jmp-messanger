@@ -3,6 +3,8 @@ package com.epam.ld.module2.testing.template;
 import com.epam.ld.module2.testing.Client;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -27,5 +29,28 @@ public class TemplateEngineTest {
         String result = templateEngine.generateMessage(new Template("Name is #{name}"), new Client());
 
         assertEquals("Name is Bob", result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"Mike", "Example", "Test123"})
+    void shouldReturnTemplateForOtherNames(String name){
+        when(paramReader.readParams()).thenReturn(String.format("name=%s", name));
+
+        TemplateEngine templateEngine = new TemplateEngine(paramReader);
+        String result = templateEngine.generateMessage(new Template("Name is #{name}"), new Client());
+        String answer = String.format("Name is %s", name);
+        assertEquals(answer, result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"tag", "name", "color"})
+    void shouldReturnTemplateForDifferentHashVales(String hashValue){
+        when(paramReader.readParams()).thenReturn(String.format("%s=Test", hashValue));
+        String template = String.format("%s is #{%s}", hashValue.toUpperCase(), hashValue);
+
+        TemplateEngine templateEngine = new TemplateEngine(paramReader);
+        String result = templateEngine.generateMessage(new Template(template), new Client());
+        String answer = String.format("%s is Test", hashValue.toUpperCase());
+        assertEquals(answer, result);
     }
 }
