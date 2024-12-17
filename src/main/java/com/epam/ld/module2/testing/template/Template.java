@@ -9,4 +9,8 @@ public class Template {
     public Template(String template) {
         this.template = template;
     }
+
+    public String getTemplate() {
+        return template;
+    }
 }
