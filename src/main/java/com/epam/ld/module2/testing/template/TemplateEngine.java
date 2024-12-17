@@ -1,4 +1,4 @@
-package main.java.com.epam.ld.module2.testing.template;
+package com.epam.ld.module2.testing.template;
 
 import com.epam.ld.module2.testing.Client;
 
