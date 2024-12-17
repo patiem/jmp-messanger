@@ -17,6 +17,29 @@ public class FileParamReader implements ParamReader {
     }
 
     public String readParams() {
-        return "";
+        StringBuilder result = new StringBuilder();
+        try {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (result.length() > 0) {
+                    result.append(",");
+                }
+                result.append(line);
+            }
+            return result.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+    public void writeMessage(String message) {
+        try {
+            writer.write(message);
+            writer.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
