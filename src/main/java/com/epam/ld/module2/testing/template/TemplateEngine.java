@@ -1,6 +1,7 @@
 package com.epam.ld.module2.testing.template;
 
 import com.epam.ld.module2.testing.Client;
+import com.epam.ld.module2.testing.readers.ParamReader;
 
 import java.util.ArrayList;
 import java.util.HashMap;
