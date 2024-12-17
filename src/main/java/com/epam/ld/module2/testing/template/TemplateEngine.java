@@ -46,7 +46,7 @@ public class TemplateEngine {
 
     private HashMap<String, String> extractParamsFromUserInput(String params) {
         HashMap<String, String> inputParams = new HashMap<>();
-        Matcher matcher = Pattern.compile("(\\w+)=([^,|$]+)").matcher(params);
+        Matcher matcher = Pattern.compile("(\\w+)=([^\\s,|$]+)").matcher(params);
         while (matcher.find()) {
             String group = matcher.group();
             String[] split = group.split("=");
@@ -63,7 +63,7 @@ public class TemplateEngine {
             String group = matcher.group();
             String pureHash = group.replaceAll("#", "")
                     .replaceAll("\\{", "")
-                    .replaceAll("\\}", "");
+                    .replaceAll("}", "");
             allMatches.add(pureHash);
         }
         return allMatches;

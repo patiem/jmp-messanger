@@ -63,4 +63,15 @@ public class TemplateEngineTest {
 
         assertEquals("Name is Bob, Tag is Test", result);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"name=Bob tag=Test", "name=Bob\ttag=Test", "name=Bob\ntag=Test"})
+    void shouldWorkForMoreThanOneHashValueWhenNotComaSeparated(String input){
+        when(paramReader.readParams()).thenReturn(input);
+
+        TemplateEngine templateEngine = new TemplateEngine(paramReader);
+        String result = templateEngine.generateMessage(new Template("Name is #{name}, Tag is #{tag}"), new Client());
+
+        assertEquals("Name is Bob, Tag is Test", result);
+    }
 }
