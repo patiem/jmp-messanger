@@ -46,7 +46,7 @@ public class TemplateEngine {
 
     private HashMap<String, String> extractParamsFromUserInput(String params) {
         HashMap<String, String> inputParams = new HashMap<>();
-        Matcher matcher = Pattern.compile(".*=.*").matcher(params);
+        Matcher matcher = Pattern.compile("(\\w+)=([^,|$]+)").matcher(params);
         while (matcher.find()) {
             String group = matcher.group();
             String[] split = group.split("=");
