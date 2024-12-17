@@ -1,4 +1,4 @@
-package main.java.com.epam.ld.module2.testing;
+package com.epam.ld.module2.testing;
 
 /**
  * The type Client.
