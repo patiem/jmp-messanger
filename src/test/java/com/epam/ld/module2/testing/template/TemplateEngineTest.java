@@ -53,4 +53,14 @@ public class TemplateEngineTest {
         String answer = String.format("%s is Test", hashValue.toUpperCase());
         assertEquals(answer, result);
     }
+
+    @Test
+    void shouldWorkForMoreThanOneHashValue(){
+        when(paramReader.readParams()).thenReturn("name=Bob, tag=Test");
+
+        TemplateEngine templateEngine = new TemplateEngine(paramReader);
+        String result = templateEngine.generateMessage(new Template("Name is #{name}, Tag is #{tag}"), new Client());
+
+        assertEquals("Name is Bob, Tag is Test", result);
+    }
 }
